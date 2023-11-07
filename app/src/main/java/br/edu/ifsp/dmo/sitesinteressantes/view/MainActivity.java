@@ -20,7 +20,7 @@ import br.edu.ifsp.dmo.sitesinteressantes.model.dao.SiteDao;
 import br.edu.ifsp.dmo.sitesinteressantes.view.adapter.SiteAdapter;
 
 public class MainActivity extends AppCompatActivity {
-
+    /* Comentário */
     private FloatingActionButton button;
     private RecyclerView recyclerView;
     private List<Site> siteList;
