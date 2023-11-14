@@ -1,26 +1,26 @@
 package br.edu.ifsp.dmo.sitesinteressantes.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 import br.edu.ifsp.dmo.sitesinteressantes.R;
+import br.edu.ifsp.dmo.sitesinteressantes.dao.SiteDao;
 import br.edu.ifsp.dmo.sitesinteressantes.model.Site;
-import br.edu.ifsp.dmo.sitesinteressantes.model.dao.SiteDao;
 import br.edu.ifsp.dmo.sitesinteressantes.view.adapter.SiteAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    /* Comentário */
+
     private FloatingActionButton button;
     private RecyclerView recyclerView;
     private List<Site> siteList;

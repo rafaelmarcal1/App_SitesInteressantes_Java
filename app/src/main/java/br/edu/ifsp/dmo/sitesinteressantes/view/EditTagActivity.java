@@ -1,5 +1,11 @@
 package br.edu.ifsp.dmo.sitesinteressantes.view;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -7,19 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 import br.edu.ifsp.dmo.sitesinteressantes.R;
+import br.edu.ifsp.dmo.sitesinteressantes.dao.TagSiteDao;
 import br.edu.ifsp.dmo.sitesinteressantes.model.TagSite;
-import br.edu.ifsp.dmo.sitesinteressantes.model.dao.TagSiteDao;
 import br.edu.ifsp.dmo.sitesinteressantes.view.adapter.ItemClick;
 import br.edu.ifsp.dmo.sitesinteressantes.view.adapter.TagAdapter;
 
@@ -132,3 +132,4 @@ public class EditTagActivity extends AppCompatActivity implements ItemClick {
         button.setOnClickListener(view -> new_tag());
     }
 }
+

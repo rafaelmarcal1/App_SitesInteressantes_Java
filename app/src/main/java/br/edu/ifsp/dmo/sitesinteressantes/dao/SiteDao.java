@@ -12,52 +12,59 @@ import br.edu.ifsp.dmo.sitesinteressantes.model.Site;
 import br.edu.ifsp.dmo.sitesinteressantes.model.TagSite;
 
 public class SiteDao {
-    private SQLiteHelper mHelper;
+    private SQliteHelper mHelper;
+
     private SQLiteDatabase mDatabase;
+
     private Context context;
 
     public SiteDao(Context context){
         this.context = context;
-        mHelper = new SQLiteHelper(context);
+        mHelper = new SQliteHelper(context);
     }
 
     public void create(Site site){
         TagSiteDao tagDao = new TagSiteDao(context);
 
+        int tagId = tagDao.recuperateTagId(site.getTag());
+
         ContentValues values = new ContentValues();
-        values.put(DatabaseContract.TableSite.COLUMN_TITLE, site.getTitle());
-        values.put(DatabaseContract.TableSite.COLUMN_URL, site.getTitle());
-        values.put(DatabaseContract.TableSite.COLUMN_TAG_ID, tagId);
+        values.put(DatabaseContracts.TableSite.COLUMN_TITLE, site.getTitle());
+        values.put(DatabaseContracts.TableSite.COLUMN_URL, site.getUrl());
+        values.put(DatabaseContracts.TableSite.COLUMN_TAG_ID, tagId );
 
         mDatabase = mHelper.getWritableDatabase();
-        mDatabase.insert(DatabaseContract.TableSite.TABLE_NAME,null,values);
+        mDatabase.insert(DatabaseContracts.TableSite.CREATE_TABLE,
+                null,
+                values);
+        mDatabase.close();
     }
 
     public List<Site> recuperateAll(){
-        String query = "SELECT " +
-                "S." + DatabaseContract.TableSite.COLUMN_TITLE + ", " +
-                "S. " + DatabaseContract.TableSite.COLUMN_URL + ", " +
-                "T. " + DatabaseContract.TableTag.COLUMN_TAG +
-                " FROM " + DatabaseContract.TableSite.TABLE_NAME + " AS S" +
-                " INNER JOIN " + DatabaseContract.TableTag.TABLE_NAME + " AS T" +
-                " ON S." + DatabaseContract.TableSite.COLUMN_TAG_ID +
-                " = T." + DatabaseContract.TableTag._ID +
-                " ORDER BY S." + DatabaseContract.TableSite.COLUMN_TITLE;
+        String query  = "SELECT " +
+                "S." + DatabaseContracts.TableSite.COLUMN_TITLE + ", " +
+                "S." + DatabaseContracts.TableSite.COLUMN_URL + ", " +
+                "T." + DatabaseContracts.TableTag.COLUMN_TAG +
+                " FROM " + DatabaseContracts.TableSite.TABLE_NAME + " AS S" +
+                " INNER JOIN " + DatabaseContracts.TableTag.TABLE_NAME + " AS T" +
+                " ON S." + DatabaseContracts.TableSite.COLUMN_TAG_ID + " = T." + DatabaseContracts.TableTag._ID +
+                " ORDER BY S." + DatabaseContracts.TableSite.COLUMN_TITLE;
 
         mDatabase = mHelper.getReadableDatabase();
         Cursor cursor = mDatabase.rawQuery(query, null);
-
-        List<Site> list new ArrayList<>();
+        List<Site> list = new ArrayList<>();
 
         while (cursor.moveToNext()){
             list.add(
                     new Site(cursor.getString(0),
                             cursor.getString(1),
-                            new TagSite(cursor.getString(2)))
+                            new TagSite(cursor.getString(2)
+                            )
+                    )
             );
         }
 
         cursor.close();
-
+        return list;
     }
 }

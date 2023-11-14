@@ -11,37 +11,39 @@ import java.util.List;
 import br.edu.ifsp.dmo.sitesinteressantes.model.TagSite;
 
 public class TagSiteDao {
-    private SQLiteHelper mHelper;
+    private SQliteHelper mHelper;
     private SQLiteDatabase mDatabase;
 
     public TagSiteDao(Context context){
-        mHelper = new SQLiteHelper(context);
+        mHelper = new SQliteHelper(context);
     }
 
     public void create(TagSite tag){
         ContentValues values = new ContentValues();
-        values.put(DatabaseContract.TableTag.COLUMN_TAG, tag.getTag());
+        values.put(DatabaseContracts.TableTag.COLUMN_TAG, tag.getTag());
 
         mDatabase = mHelper.getWritableDatabase();
         mDatabase.insert(
-                DatabaseContract.TableTag.TABLE_NAME, null,
+                DatabaseContracts.TableTag.CREATE_TABLE,
+                null,
                 values
         );
+
         mDatabase.close();
     }
 
     public boolean update(TagSite tagOld, TagSite tagNew){
         boolean answer;
         ContentValues values = new ContentValues();
-        values.put(DatabaseContract.TableTag.COLUMN_TAG, tagNew.getTag());
+        values.put(DatabaseContracts.TableTag.COLUMN_TAG, tagNew.getTag());
 
-        String where = DatabaseContract.TableTag.COLUMN_TAG + " = ? ";
+        String where = DatabaseContracts.TableTag.COLUMN_TAG + " = ? ";
 
         String whereArgs[] = {tagOld.getTag()};
 
         try {
             mDatabase = mHelper.getWritableDatabase();
-            mDatabase.update(DatabaseContract.TableTag.TABLE_NAME,
+            mDatabase.update(DatabaseContracts.TableTag.TABLE_NAME,
                     values,
                     where,
                     whereArgs);
@@ -55,26 +57,24 @@ public class TagSiteDao {
     public List<TagSite> recuperateAll(){
         List<TagSite> allTags = new ArrayList<>();
 
-        String columns[] = {DatabaseContract.TableTag.COLUMN_TAG};
+        String columns[] = {DatabaseContracts.TableTag.COLUMN_TAG};
         Cursor cursor;
 
         mDatabase = mHelper.getReadableDatabase();
-        cursor = mDatabase.query(DatabaseContract.TableTag.TABLE_NAME,
+        cursor = mDatabase.query(DatabaseContracts.DATABASE_NAME,
                 columns,
                 null,
                 null,
                 null,
                 null,
-                DatabaseContract.TableTag.COLUMN_TAG);
-
+                DatabaseContracts.TableTag.COLUMN_TAG);
 
         while (cursor.moveToNext()){
-            allTags.add(new TagSite(
-                    cursor.getString(0)
-            )
+            allTags.add(
+                    new TagSite(cursor.getString(0)
+                    )
             );
         }
-
         cursor.close();
         mDatabase.close();
 
@@ -83,15 +83,15 @@ public class TagSiteDao {
 
     public int recuperateTagId(TagSite tag){
         int id;
-        String columns[] = {DatabaseContract.TableTag._ID};
-        String where = DatabaseContract.TableTag.COLUMN_TAG + " = ? ";
+        String columns[] = {DatabaseContracts.TableTag._ID};
+        String where = DatabaseContracts.TableTag.COLUMN_TAG + " = ? ";
         String whereArgs[] = {tag.getTag()};
 
         Cursor cursor;
 
         mDatabase = mHelper.getReadableDatabase();
         cursor = mDatabase.query(
-                DatabaseContract.TableTag.TABLE_NAME,
+                DatabaseContracts.TableTag.TABLE_NAME,
                 columns,
                 where,
                 whereArgs,
@@ -108,11 +108,11 @@ public class TagSiteDao {
     }
 
     public void delete(TagSite tag){
-        String where = DatabaseContract.TableTag.COLUMN_TAG + " = ? ";
+        String where = DatabaseContracts.TableTag.COLUMN_TAG + " = ? ";
         String whereArgs[] = {tag.getTag()};
 
         mDatabase = mHelper.getWritableDatabase();
-        mDatabase.delete(DatabaseContract.TableTag.TABLE_NAME,
+        mDatabase.delete(DatabaseContracts.TableTag.TABLE_NAME,
                 where,
                 whereArgs);
         mDatabase.close();
